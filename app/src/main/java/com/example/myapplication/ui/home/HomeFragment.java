@@ -47,9 +47,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -79,6 +84,8 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
 
         
         final Activity activity = getActivity();
+
+
         ActivityResultLauncher<String> cameraPermission=registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
             @Override
             public void onActivityResult(Boolean result) {
@@ -172,16 +179,31 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                     productNameView.setVisibility(View.VISIBLE);
                     productNameView.setText(response.toString());
 
-
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         JSONObject productInfos = new JSONObject(jsonObject.getString("product"));
                         Toast.makeText(activity.getApplicationContext(), (String) productInfos.get("product_name"), Toast.LENGTH_LONG).show();//display the response on screen
                         Picasso.get().load((String) productInfos.get("image_front_url")).into(productImageView);
+
                         productNameView.setText((String) productInfos.get("product_name"));
+                        productNameView.setVisibility(View.VISIBLE);
+
+                        try (FileOutputStream fos = getContext().openFileOutput("saved_products", getContext().MODE_PRIVATE)) {
+                            byte[] data = StandardCharsets.UTF_16.encode((String) productInfos.get("product_name")).array(); // TODO: Mettre code produit
+                            fos.write(data);
+                            Toast.makeText(activity.getApplicationContext(), "datawritten", Toast.LENGTH_LONG).show();
+                            fos.flush();
+                        } catch(NullPointerException e){
+                            Toast.makeText(activity.getApplicationContext(), "ERROR nullpo", Toast.LENGTH_LONG).show();//display the response on screen
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
+
+
                 }
             }, new Response.ErrorListener() {
                 @Override
