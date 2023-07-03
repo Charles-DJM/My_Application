@@ -66,10 +66,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/product_name"
+        android:layout_marginStart="280dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Ajouter"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/return_to_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/product_name"
         android:visibility="gone"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="8dp"
-        android:text="Ajouter" />
-
+        android:text="Retour" />
 </RelativeLayout>

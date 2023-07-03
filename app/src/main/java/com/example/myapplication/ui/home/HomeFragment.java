@@ -9,6 +9,7 @@ import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,8 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
     private CodeScannerView scannerView;
     private TextView productNameView;
     private ImageView productImageView;
+    private Button returnToScanButton;
+    private Button addToListButton;
 
     @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -79,6 +82,19 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         this.scannedTextView = root.findViewById(R.id.scanned_text);
         this.productNameView = root.findViewById(R.id.product_name);
         this.productImageView = root.findViewById(R.id.product_image);
+
+        this.returnToScanButton = root.findViewById(R.id.return_to_scan);
+
+
+
+        this.returnToScanButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                restartFragment();
+                // Code here executes on main thread after user presses button
+            }
+        });
+
+        this.addToListButton = root.findViewById(R.id.add_to_list_button);
         //homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 /***YEY***/
 
@@ -90,23 +106,23 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
             @Override
             public void onActivityResult(Boolean result) {
                 if(result){
-                    Toast.makeText(activity, "Camera permission granted", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, "Camera permission granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(activity, "Camera permission not granted", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, "Camera permission not granted", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         cameraPermission.launch(Manifest.permission.CAMERA);
 
         mCodeScanner = new CodeScanner(activity, scannerView);
-        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
+        mCodeScanner.setScanMode(ScanMode.SINGLE);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
                         scannedTextView.setText(result.getText());
                         ApiCallVolley apiCallVolley = new ApiCallVolley(result.getText(), activity);
                     }
@@ -142,11 +158,16 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         binding = null;
     }
 
+    public void restartFragment(){
+        replaceFragment(new HomeFragment());
+    }
+
+
     @Override
     public void replaceFragment(Fragment fragment) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.navigation_home,fragment, fragment.toString());
-            fragmentTransaction.addToBackStack(fragment.toString());
+            fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,fragment, fragment.toString());
+            //fragmentTransaction.addToBackStack(fragment.toString());
             fragmentTransaction.commit();
     }
 
@@ -159,10 +180,10 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         public ApiCallVolley(String barcode, Activity activity) {
             url += barcode + ".json";
             this.activity = activity;
-            getData();
+            getData(barcode);
         }
 
-        private void getData() {
+        private void getData(String barcode) {
             // RequestQueue initialized
             mRequestQueue = Volley.newRequestQueue(activity.getApplicationContext());
 
@@ -179,31 +200,26 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                     productNameView.setVisibility(View.VISIBLE);
                     productNameView.setText(response.toString());
 
+                    returnToScanButton.setVisibility(View.VISIBLE);
+                    addToListButton.setVisibility(View.VISIBLE);
+
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         JSONObject productInfos = new JSONObject(jsonObject.getString("product"));
-                        Toast.makeText(activity.getApplicationContext(), (String) productInfos.get("product_name"), Toast.LENGTH_LONG).show();//display the response on screen
                         Picasso.get().load((String) productInfos.get("image_front_url")).into(productImageView);
 
                         productNameView.setText((String) productInfos.get("product_name"));
                         productNameView.setVisibility(View.VISIBLE);
 
-                        try (FileOutputStream fos = getContext().openFileOutput("saved_products", getContext().MODE_PRIVATE)) {
-                            byte[] data = StandardCharsets.UTF_16.encode((String) productInfos.get("product_name")).array(); // TODO: Mettre code produit
-                            fos.write(data);
-                            Toast.makeText(activity.getApplicationContext(), "datawritten", Toast.LENGTH_LONG).show();
-                            fos.flush();
-                        } catch(NullPointerException e){
-                            Toast.makeText(activity.getApplicationContext(), "ERROR nullpo", Toast.LENGTH_LONG).show();//display the response on screen
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
+                        addToListButton.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                saveProduct(barcode);
+                                restartFragment();
+                            }
+                        });
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -211,8 +227,21 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                     //Log.i(TAG, "Error :" + error.toString());
                 }
             });
-
             mRequestQueue.add(mStringRequest);
+        }
+
+        private void saveProduct(String productCode){
+            try (FileOutputStream fos = getContext().openFileOutput("saved_products", getContext().MODE_APPEND)) {
+                byte[] data = StandardCharsets.UTF_8.encode((String) (productCode + "\n")).array();
+                fos.write(data);
+                //Toast.makeText(activity.getApplicationContext(), "datawritten", Toast.LENGTH_LONG).show();
+                fos.flush();
+            } catch(NullPointerException e){
+                Toast.makeText(activity.getApplicationContext(), "ERROR nullpo", Toast.LENGTH_LONG).show();//display the response on screen
+            } catch (IOException e) {
+                //throw new RuntimeException(e);
+                System.out.println(e.toString());
+            }
         }
     }
 }
