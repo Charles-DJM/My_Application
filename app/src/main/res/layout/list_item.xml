@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
-        >
+        android:background="#333"
+        android:backgroundTint="#333">
 
         <LinearLayout
             android:id="@+id/linearlayout"
@@ -39,21 +40,21 @@
                     android:text="Product Name"
                     android:textColor="@color/black"
                     android:textSize="26sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/product_rating"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="26sp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="20dp"
+                android:text="E"
                 android:textColor="@color/black"
-                android:text="E"/>
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
