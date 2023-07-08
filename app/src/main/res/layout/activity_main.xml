@@ -24,8 +24,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#9B27AF"
-            android:backgroundTint="#9B27AF" />
+            android:background="@drawable/gradient" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <fragment

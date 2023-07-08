@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         this.productNameView = root.findViewById(R.id.product_name);
         this.productImageView = root.findViewById(R.id.product_image);
 
-        this.returnToScanButton = root.findViewById(R.id.return_to_scan);
+        this.returnToScanButton = root.findViewById(R.id.return_to_scan_button);
 
 
 
