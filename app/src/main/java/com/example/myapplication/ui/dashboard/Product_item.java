@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.ui.ProductReview;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -33,7 +34,7 @@ public class Product_item {
 
                     product_name = (String) productInfos.get("product_name");
                     product_image_link = (String) productInfos.get("image_front_url");
-                    rating = "E";
+                    rating = ProductReview.categorieFromProductJson(response).toString();
                     id = "1";
 
                 }catch (Exception e){
