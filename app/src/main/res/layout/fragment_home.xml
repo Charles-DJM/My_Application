@@ -34,61 +34,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/product_name"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scanner_view"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/pinkmomcare"
+            android:textSize="20dp"
+            android:visibility="visible"/>
 
-    <ImageView
-        android:id="@+id/product_image"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        android:layout_below="@+id/product_name"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/add_to_list_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/product_name"
-        android:layout_alignLeft="@id/scanned_text"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="#9C27B0"
-        android:text="Ajouter"
-        android:visibility="visible" />
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_below="@+id/product_name"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/return_to_scan_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/product_name"
-        android:layout_alignRight="@id/scanned_text"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="30dp"
-        android:backgroundTint="#9C27B0"
-        android:onClick="@string/app_name"
-        android:text="Scan"
-        android:visibility="visible" />
+        <Button
+            android:id="@+id/add_to_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/product_image"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#9C27B0"
+            android:text="Ajouter"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/return_to_scan_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/product_image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:backgroundTint="#9C27B0"
+            android:onClick="@string/app_name"
+            android:text="Scan"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </RelativeLayout>
