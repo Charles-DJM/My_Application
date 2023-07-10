@@ -33,6 +33,8 @@ import com.budiyev.android.codescanner.ScanMode;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 import com.example.myapplication.ui.FragmentChangeListener;
+import com.example.myapplication.ui.ProductReview;
+import com.example.myapplication.ui.Rating;
 import com.google.zxing.Result;
 
 import com.android.volley.Request;
@@ -65,6 +67,7 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
     private TextView scannedTextView;
     private CodeScannerView scannerView;
     private TextView productNameView;
+    private TextView productRating;
     private ImageView productImageView;
     private Button returnToScanButton;
     private Button addToListButton;
@@ -82,7 +85,7 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         this.scannedTextView = root.findViewById(R.id.scanned_text);
         this.productNameView = root.findViewById(R.id.product_name);
         this.productImageView = root.findViewById(R.id.product_image);
-
+        this.productRating = root.findViewById(R.id.product_rating);
         this.returnToScanButton = root.findViewById(R.id.return_to_scan_button);
 
 
@@ -207,6 +210,9 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         JSONObject productInfos = new JSONObject(jsonObject.getString("product"));
                         Picasso.get().load((String) productInfos.get("image_front_url")).into(productImageView);
+
+                        Rating rating = ProductReview.categorieFromProductJson(response);
+                        productRating.setText(rating.toString());
 
                         productNameView.setText((String) productInfos.get("product_name"));
                         productNameView.setVisibility(View.VISIBLE);
