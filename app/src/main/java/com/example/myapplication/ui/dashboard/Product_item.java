@@ -9,13 +9,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.ui.ProductReview;
+import com.example.myapplication.ui.Rating;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 public class Product_item {
-    public String product_name, product_image_link, rating, id;
-
+    public String product_name, product_image_link, id;
+    public Rating rating;
     RequestQueue requestQueue;
 
     public Product_item(RequestQueue requestQueue, String barcode) {
@@ -24,6 +25,7 @@ public class Product_item {
     }
 
     private void getData(String barcode){
+        rating = Rating.DECONSEILLE;
         String url = "https://world.openfoodfacts.org/api/v0/product/" + barcode.trim() + ".json";
         StringRequest sr = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -34,7 +36,7 @@ public class Product_item {
 
                     product_name = (String) productInfos.get("product_name");
                     product_image_link = (String) productInfos.get("image_front_url");
-                    rating = ProductReview.categorieFromProductJson(response).toString();
+                    rating = ProductReview.categorieFromProductJson(response);
                     id = "1";
 
                 }catch (Exception e){
@@ -46,7 +48,7 @@ public class Product_item {
             public void onErrorResponse(VolleyError error) {
                 product_name = "Error";
                 product_image_link = "Error";
-                rating = "";
+                rating = Rating.DECONSEILLE;
             }
         });
         requestQueue.add(sr);
