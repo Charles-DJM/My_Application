@@ -30,18 +30,19 @@
             android:gravity="start"
             android:id="@+id/EditText"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/pinkmomcare"/>
+            android:textColor="@color/pinkmomcare"
+            android:scrollbars = "vertical"/>
 
-        <ImageView
+        <Button
             android:id="@+id/save"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:backgroundTint="@color/purplemomcare"
-            android:src="@drawable/ic_save"
+            android:background="@drawable/ic_save"
             android:visibility="visible"
-            android:layout_marginTop="20dp">
-
-        </ImageView>
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp">
+        </Button>
     </LinearLayout>
     <TextView
         android:id="@+id/textNotifications"
