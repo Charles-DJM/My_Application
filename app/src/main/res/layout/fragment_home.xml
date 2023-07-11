@@ -26,7 +26,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/pinkmomcare"
         android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -82,38 +82,34 @@
                 android:orientation="horizontal">
                 <Button
                     android:id="@+id/add_to_list_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/purplemomcare"
-                    android:text="Ajouter"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:background="@drawable/ic_add_fav"/>
 
                 <Button
                     android:id="@+id/return_to_scan_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="50dp"
                     android:backgroundTint="@color/purplemomcare"
                     android:onClick="@string/app_name"
-                    android:text="Scan"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:background="@drawable/ic_return_scan"/>
             </RelativeLayout>
             <ImageView
+                android:id="@+id/home_rating"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/home_rating">
+                android:layout_height="match_parent">
             </ImageView>
         </LinearLayout>
-
-
-
 
     </RelativeLayout>
 

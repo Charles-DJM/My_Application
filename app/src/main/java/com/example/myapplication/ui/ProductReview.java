@@ -13,7 +13,7 @@ public class ProductReview {
 
         if(productInfos.toString().contains("alcohol")) {
             System.out.println("LOLOLOL");
-            return Rating.IMPROPRE;
+            return Rating.DECONSEILLE;
         } else {
             System.out.println("NO alcohol");
         }
