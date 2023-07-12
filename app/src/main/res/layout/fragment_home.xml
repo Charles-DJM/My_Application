@@ -44,18 +44,7 @@
             android:orientation="vertical"
             android:id="@+id/Text"
             android:gravity="center_horizontal">
-            <TextView
-                android:id="@+id/product_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:textAlignment="center"
-                android:textColor="@color/pinkmomcare"
-                android:textSize="20dp"
-                android:visibility="visible"/>
+
 
             <TextView
                 android:id="@+id/product_rating"
@@ -64,19 +53,74 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:textAlignment="center"
                 android:textColor="@color/pinkmomcare"
                 android:textSize="20dp"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/gradient"
+                android:visibility="gone">
+            </com.google.android.material.divider.MaterialDivider>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/home_rating"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/product_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/pinkmomcare"
+                    android:textSize="20dp"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
+
+
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient"
+                android:visibility="gone"
+                android:layout_marginBottom="10dp">
+            </com.google.android.material.divider.MaterialDivider>
+
+
+
+
+
+
             <ImageView
                 android:id="@+id/product_image"
                 android:layout_width="300dp"
                 android:layout_height="400dp"
-                android:layout_below="@+id/product_name"
+
                 android:visibility="gone"
                 android:layout_centerHorizontal="true" />
+
             <RelativeLayout
+                android:id="@+id/button_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -103,12 +147,9 @@
                     android:onClick="@string/app_name"
                     android:visibility="gone"
                     android:background="@drawable/ic_return_scan"/>
+
             </RelativeLayout>
-            <ImageView
-                android:id="@+id/home_rating"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </ImageView>
+
         </LinearLayout>
 
     </RelativeLayout>

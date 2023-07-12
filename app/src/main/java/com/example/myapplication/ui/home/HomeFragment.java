@@ -3,9 +3,7 @@ package com.example.myapplication.ui.home;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.ui.Rating;
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.toolbox.ImageRequest;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
@@ -34,7 +31,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 import com.example.myapplication.ui.FragmentChangeListener;
 import com.example.myapplication.ui.ProductReview;
-import com.example.myapplication.ui.Rating;
+import com.example.myapplication.ui.dashboard.Product_item;
+import com.google.android.material.divider.MaterialDivider;
 import com.google.zxing.Result;
 
 import com.android.volley.Request;
@@ -48,29 +46,26 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import javax.net.ssl.HttpsURLConnection;
-
-public class HomeFragment extends Fragment implements FragmentChangeListener {
+public class HomeFragment extends Fragment {
     private CodeScanner mCodeScanner;
     private FragmentHomeBinding binding;
+
+    public Rating rating;
     private TextView scannedTextView;
     private CodeScannerView scannerView;
     private TextView productNameView;
-    private TextView productRating;
+    private TextView productRating; //TODO: Virer cette merde
     private ImageView productImageView;
     private Button returnToScanButton;
     private Button addToListButton;
+    private ImageView ImageViewRating;
+
+    private MaterialDivider Divider1, Divider2;
 
     @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -87,7 +82,9 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         this.productImageView = root.findViewById(R.id.product_image);
         this.productRating = root.findViewById(R.id.product_rating);
         this.returnToScanButton = root.findViewById(R.id.return_to_scan_button);
-
+        this.ImageViewRating = root.findViewById(R.id.home_rating);
+        this.Divider1 = root.findViewById(R.id.divider1);
+        this.Divider2 = root.findViewById(R.id.divider2);
 
 
         this.returnToScanButton.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +163,7 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
     }
 
 
-    @Override
+
     public void replaceFragment(Fragment fragment) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.nav_host_fragment_activity_main,fragment, fragment.toString());
@@ -180,6 +177,7 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
         private String url = "https://world.openfoodfacts.org/api/v0/product/";
         private Activity activity;
 
+
         public ApiCallVolley(String barcode, Activity activity) {
             url += barcode + ".json";
             this.activity = activity;
@@ -192,6 +190,8 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
 
             // String Request initialized
             mStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+
                 @Override
                 public void onResponse(String response) {
 
@@ -206,6 +206,13 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                     returnToScanButton.setVisibility(View.VISIBLE);
                     addToListButton.setVisibility(View.VISIBLE);
 
+                    Divider1.setVisibility(View.VISIBLE);
+                    Divider2.setVisibility(View.VISIBLE);
+
+
+
+
+
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
                         JSONObject productInfos = new JSONObject(jsonObject.getString("product"));
@@ -214,8 +221,12 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                         Rating rating = ProductReview.categorieFromProductJson(response);
                         productRating.setText(rating.toString());
 
+                        setRating(rating);
+
                         productNameView.setText((String) productInfos.get("product_name"));
                         productNameView.setVisibility(View.VISIBLE);
+
+
 
                         addToListButton.setOnClickListener(new View.OnClickListener() {
                             public void onClick(View v) {
@@ -249,5 +260,33 @@ public class HomeFragment extends Fragment implements FragmentChangeListener {
                 System.out.println(e.toString());
             }
         }
+
+        private void setRating(Rating rating){
+
+
+            if(rating.equals(Rating.PROPRE) ){
+                ImageViewRating.setImageResource(R.drawable.ic_propre);
+            }
+
+            if(rating.equals(Rating.IMPROPRE) ){
+                ImageViewRating.setImageResource(R.drawable.ic_impropre);
+                ImageViewRating.setRotation(45);
+            }
+
+            if(rating.equals(Rating.CONSEILLE) ){
+                ImageViewRating.setImageResource(R.drawable.ic_conseille);
+            }
+
+            if(rating.equals(Rating.DECONSEILLE) ){
+                ImageViewRating.setImageResource(R.drawable.ic_deconseille);
+            }
+        }
+
     }
+
+
+
+
+
+
 }
